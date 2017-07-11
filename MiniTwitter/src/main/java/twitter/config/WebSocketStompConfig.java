@@ -1,4 +1,4 @@
-package marcopolo;
+package twitter.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -12,7 +12,7 @@ public class WebSocketStompConfig extends AbstractWebSocketMessageBrokerConfigur
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry.addEndpoint("/marcopolo").withSockJS();
+    registry.addEndpoint("/spittr").withSockJS();
   }
 
   @Override

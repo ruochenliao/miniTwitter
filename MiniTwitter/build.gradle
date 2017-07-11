@@ -22,6 +22,9 @@ dependencies {
 
     compile("org.springframework.amqp:spring-rabbit:1.2.1.RELEASE")
     compile("org.projectreactor:reactor-tcp:1.0.0.RELEASE")
+    
+    compile("org.springframework.security:spring-security-web:3.2.4.RELEASE")
+    compile("org.springframework.security:spring-security-config:3.2.4.RELEASE")
 
     compile("com.fasterxml.jackson.core:jackson-databind:2.3.1")
     compile("javax.inject:javax.inject:1")

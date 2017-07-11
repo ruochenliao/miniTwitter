@@ -1,4 +1,4 @@
-package marcopolo;
+package twitter.config;
 
 import javax.servlet.ServletRegistration.Dynamic;
 
@@ -8,7 +8,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { };
+		return new Class<?>[] { SecurityConfig.class };
 	}
 
 	@Override
@@ -20,10 +20,8 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
 	}
-
 	@Override
 	protected void customizeRegistration(Dynamic registration) {
 		registration.setAsyncSupported(true);
 	}
-	
 }
