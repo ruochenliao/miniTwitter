@@ -17,7 +17,11 @@ import org.thymeleaf.templateresolver.TemplateResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages ={"twitter"})
+@ComponentScan({"twitter"})
+//@ComponentScan(basePackages ={"controller"})
+//@ComponentScan(basePackages ={"controller", "service","config", "DAO"})
+//@ComponentScan(basePackages ={"twitter.contoller","twitter.service"})
+//@ComponentScan(basePackages ={"twitter.contoller"})
 @EnableScheduling
 public class WebConfig extends WebMvcConfigurerAdapter {
 
