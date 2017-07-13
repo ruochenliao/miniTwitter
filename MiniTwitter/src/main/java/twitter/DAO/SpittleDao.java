@@ -1,5 +1,7 @@
 package twitter.DAO;
 
-public class SpittleDao extends BaseDaoHibernate4{
+import twitter.domain.Spittle;
+
+public interface SpittleDao extends BaseDAO<Spittle>{
 
 }

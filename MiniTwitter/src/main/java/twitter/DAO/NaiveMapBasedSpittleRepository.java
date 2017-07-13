@@ -7,7 +7,6 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Repository;
 
-import twitter.controller.SpittleRepository;
 import twitter.domain.Spittle;
 
 @Repository

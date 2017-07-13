@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import twitter.DAO.SpittleDao;
 import twitter.domain.Notification;
 import twitter.domain.Spittle;
 
@@ -14,13 +15,14 @@ import twitter.domain.Spittle;
 public class SpittleFeedServiceImpl implements SpittleFeedService {
 
 	private SimpMessagingTemplate messaging;
+	private SpittleDao spittleDao; 
 	private Pattern pattern = Pattern.compile("\\@(\\S+)");
 	
 	@Autowired
-	public SpittleFeedServiceImpl(SimpMessagingTemplate messaging) {
+	public SpittleFeedServiceImpl(SimpMessagingTemplate messaging, SpittleDao spittleDao) {
 		this.messaging = messaging;
+		this.spittleDao = spittleDao;
 	}
-	
 	public void broadcastSpittle(Spittle spittle) {
 		messaging.convertAndSend("/topic/spittlefeed", spittle);
 		
@@ -30,6 +32,12 @@ public class SpittleFeedServiceImpl implements SpittleFeedService {
 			messaging.convertAndSendToUser(username, "/queue/notifications",
 					new Notification("You just got mentioned!"));
 		}
+	}
+
+	@Override
+	public void saveSpittle(Spittle spittle) {
+		// TODO Auto-generated method stub
+		spittleDao.save(spittle);
 	}
 	
 }

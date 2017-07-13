@@ -14,6 +14,5 @@ create table spittle (
   id integer identity primary key,
   spitter integer not null,
   message varchar(2000) not null,
-  postedTime datetime not null,
-  foreign key (spitter) references spitter(id)
+  postedTime datetime not null
 );

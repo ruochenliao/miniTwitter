@@ -1,20 +1,36 @@
 package twitter.DAO;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
-
+@Repository
 public class BaseDaoHibernate4<T> implements BaseDAO<T>{
 	// DAO组件进行持久化操作底层依赖的SessionFactory组件
 	private SessionFactory sessionFactory;
 	// 依赖注入SessionFactory所需的setter方法
+	/*
+	@Inject
+	public BaseDaoHibernate4(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}	
+	public BaseDaoHibernate4(){
+		
+	}
+	*/
+	
+	@Inject
 	public void setSessionFactory(SessionFactory sessionFactory)
 	{
 		this.sessionFactory = sessionFactory;
 	}
+	
 	public SessionFactory getSessionFactory()
 	{
 		return this.sessionFactory;
@@ -27,10 +43,19 @@ public class BaseDaoHibernate4<T> implements BaseDAO<T>{
 			.get(entityClazz , id);
 	}
 	// 保存实体
+	@Transactional
 	public Serializable save(T entity)
 	{
-		return getSessionFactory().getCurrentSession()
-			.save(entity);
+		try{
+		//return getSessionFactory().getCurrentSession()
+		//	.save(entity);
+			return getSessionFactory().getCurrentSession().save(entity);
+		}
+		catch(Exception e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();			
+			return "error";
+		}
 	}
 	// 更新实体
 	public void update(T entity)

@@ -1,4 +1,4 @@
-package twitter.controller;
+package twitter.DAO;
 
 import twitter.domain.Spittle;
 
