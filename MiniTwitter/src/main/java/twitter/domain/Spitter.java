@@ -31,9 +31,8 @@ public class Spitter {
 	@Column(name="updateByEmail")
 	private boolean updateByEmail;
 
-	public Spitter(Long id, String username, String password, String fullName,
+	public Spitter(String username, String password, String fullName,
 			String email, boolean updateByEmail) {
-		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.fullName = fullName;

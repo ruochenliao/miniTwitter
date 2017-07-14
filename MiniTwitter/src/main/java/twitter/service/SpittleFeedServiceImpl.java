@@ -1,5 +1,8 @@
 package twitter.service;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +39,22 @@ public class SpittleFeedServiceImpl implements SpittleFeedService {
 
 	@Override
 	public void saveSpittle(Spittle spittle) {
-		// TODO Auto-generated method stub
-		spittleDao.save(spittle);
+		try{
+			spittleDao.save(spittle);
+		}
+		catch( Exception e ){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
-	
+	/*
+	@Override
+	public List<Spittle> getSpittleByUser(long user_id) {
+		return (List<Spittle>) spittleDao.get(Spittle.class, user_id );
+	}
+	*/
+	@Override
+	public Spittle getSpittleById(long spittle_id) {
+		return spittleDao.get(Spittle.class, spittle_id );
+	}	
 }

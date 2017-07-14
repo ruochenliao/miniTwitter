@@ -13,12 +13,13 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Spittle {
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
+	@GeneratedValue
 	public long id;
 	
 	//@JoinColumn(name="spitter")
 	@Column
-	private int spitter;
+	private long spitter;
 	//private String user;
 	
 	@Column
@@ -27,18 +28,20 @@ public class Spittle {
 	@Column
 	private Date postedTime;
 
-	public Spittle(String user, String message, Date postedTime) {
+	public Spittle(long spitter, String message, Date postedTime) {
 		
 		this.spitter = spitter;
 		this.message = message;
 		this.postedTime = postedTime;
 	}
-	
+	public Spittle(){
+		
+	}
 	public long getId() {
 		return this.id;
 	}
 	
-	public int getSpitter(){
+	public long getSpitter(){
 		return this.spitter;
 	}
 	

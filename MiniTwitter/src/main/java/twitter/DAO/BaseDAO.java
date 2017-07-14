@@ -18,4 +18,6 @@ public interface BaseDAO <T>{
 	List<T> findAll(Class<T> entityClazz);
 	// 获取实体总数
 	long findCount(Class<T> entityClazz);
+	
+	T findOne(Serializable id);
 }

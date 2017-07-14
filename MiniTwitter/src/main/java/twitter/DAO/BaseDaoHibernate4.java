@@ -36,11 +36,19 @@ public class BaseDaoHibernate4<T> implements BaseDAO<T>{
 		return this.sessionFactory;
 	}
 	// 根据ID加载实体
+	@Transactional
 	@SuppressWarnings("unchecked")
 	public T get(Class<T> entityClazz , Serializable id)
 	{
-		return (T)getSessionFactory().getCurrentSession()
+		try{
+			return (T)getSessionFactory().getCurrentSession()
 			.get(entityClazz , id);
+		}
+		catch( Exception e ){
+			System.out.println( e.getMessage() );
+			e.printStackTrace();
+			return null;
+		}
 	}
 	// 保存实体
 	@Transactional
@@ -161,5 +169,12 @@ public class BaseDaoHibernate4<T> implements BaseDAO<T>{
 		return query.setFirstResult((pageNo - 1) * pageSize)
 			.setMaxResults(pageSize)
 			.list();
+	}
+
+	@Override
+	@Transactional
+	public T findOne(Serializable id) {
+		//getSessionFactory().getCurrentSession().
+		return null;
 	}
 }

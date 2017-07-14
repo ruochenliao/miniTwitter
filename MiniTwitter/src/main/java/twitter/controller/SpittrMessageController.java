@@ -2,6 +2,7 @@ package twitter.controller;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -36,10 +37,14 @@ public class SpittrMessageController {
   @MessageMapping("/spittle")
   @SendToUser("/queue/notifications")
   public Notification handleSpittle(Principal principal, SpittleForm form) {
-	  Spittle spittle = new Spittle( principal.getName(), form.getText(), new Date());
-	  System.out.println( principal.getName()+" "+ form.getText() +" " );
+	  //Spittle spittle = new Spittle( principal.getName(), form.getText(), new Date());
+	  Spittle spittle = new Spittle( 1, form.getText(), new Date());
 	  feedService.saveSpittle(spittle);
+	  
+	  Spittle res = feedService.getSpittleById(1);
+	  System.out.println("spittle 1: "+ res.getMessage() + " "+res.getId()+" ");
 	  feedService.broadcastSpittle(spittle);
+	  
 	  return new Notification("Saved Spittle for user: " + principal.getName());
   }
   

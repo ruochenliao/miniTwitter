@@ -34,22 +34,24 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer{
 
 	  @Bean
 	  public DataSource dataSource() {
+		/*
 		EmbeddedDatabaseBuilder edb = new EmbeddedDatabaseBuilder();
 	    edb.setType(EmbeddedDatabaseType.H2);
 	    edb.addScript("schema.sql");
 	    edb.addScript("test-data.sql");
 	    EmbeddedDatabase embeddedDatabase = edb.build();
 	    return embeddedDatabase;
-		/*
+	    */
+		
 		BasicDataSource ds = new BasicDataSource();
-		ds.setDriverClassName("org.h2.Driver");
-		ds.setUrl("jdbc:h2:tcp://localhost:3306/twitter");
+		ds.setDriverClassName("com.mysql.jdbc.Driver");
+		ds.setUrl("jdbc:mysql://localhost:3306/twitter");
 		ds.setUsername("root");
 		ds.setPassword("272317227");
 		ds.setInitialSize(5);
 		ds.setMaxActive(10);
 		return ds;
-		*/
+		
 	  }
 
 	  public PlatformTransactionManager annotationDrivenTransactionManager() {
@@ -66,7 +68,7 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer{
 	      lsfb.setDataSource(dataSource());
 	      lsfb.setPackagesToScan("twitter.domain");
 	      Properties props = new Properties();
-	      props.setProperty("dialect", "org.hibernate.dialect.H2Dialect");
+	      props.setProperty("dialect", "org.hibernate.dialect.MySQLDialect");
 	      lsfb.setHibernateProperties(props);
 	      lsfb.afterPropertiesSet();
 	      SessionFactory object = lsfb.getObject();
