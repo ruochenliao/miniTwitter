@@ -37,6 +37,8 @@ public class SpittrMessageController {
   @MessageMapping("/spittle")
   @SendToUser("/queue/notifications")
   public Notification handleSpittle(Principal principal, SpittleForm form) {
+	  System.out.println("incoming message!");
+
 	  //Spittle spittle = new Spittle( principal.getName(), form.getText(), new Date());
 	  Spittle spittle = new Spittle( 1, form.getText(), new Date());
 	  feedService.saveSpittle(spittle);
@@ -44,7 +46,6 @@ public class SpittrMessageController {
 	  Spittle res = feedService.getSpittleById(1);
 	  System.out.println("spittle 1: "+ res.getMessage() + " "+res.getId()+" ");
 	  feedService.broadcastSpittle(spittle);
-	  
 	  return new Notification("Saved Spittle for user: " + principal.getName());
   }
   

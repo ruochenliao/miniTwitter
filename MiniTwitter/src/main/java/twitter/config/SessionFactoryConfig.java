@@ -1,11 +1,10 @@
-package twitter.DAO;
+package twitter.config;
 
 import java.io.IOException;
 import java.util.Properties;
 
 import javax.inject.Inject;
 import javax.sql.DataSource;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -13,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -24,25 +24,23 @@ import org.springframework.transaction.annotation.TransactionManagementConfigure
 
 @Configuration
 @EnableTransactionManagement
-//@ComponentScan({"twitter.DAO"})
-
-//@ComponentScan
-
 public class SessionFactoryConfig implements TransactionManagementConfigurer{
 	  @Inject
 	  private SessionFactory sessionFactory;
-
+	  /*
+	  @Bean(name = "dataSource")
+	    public DriverManagerDataSource dataSource() {
+	        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+	        driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
+	        driverManagerDataSource.setUrl("jdbc:mysql://localhost:3306/twitter");
+	        driverManagerDataSource.setUsername("root");
+	        driverManagerDataSource.setPassword("272317227");
+	        return driverManagerDataSource;
+	    }
+	  */
+	 
 	  @Bean
 	  public DataSource dataSource() {
-		/*
-		EmbeddedDatabaseBuilder edb = new EmbeddedDatabaseBuilder();
-	    edb.setType(EmbeddedDatabaseType.H2);
-	    edb.addScript("schema.sql");
-	    edb.addScript("test-data.sql");
-	    EmbeddedDatabase embeddedDatabase = edb.build();
-	    return embeddedDatabase;
-	    */
-		
 		BasicDataSource ds = new BasicDataSource();
 		ds.setDriverClassName("com.mysql.jdbc.Driver");
 		ds.setUrl("jdbc:mysql://localhost:3306/twitter");
@@ -51,8 +49,8 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer{
 		ds.setInitialSize(5);
 		ds.setMaxActive(10);
 		return ds;
-		
 	  }
+	  
 
 	  public PlatformTransactionManager annotationDrivenTransactionManager() {
 	    System.out.println(sessionFactory);

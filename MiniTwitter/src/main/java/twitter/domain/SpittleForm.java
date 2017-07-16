@@ -9,7 +9,7 @@ public class SpittleForm {
 	}
 	
 	public String getText() {
-		return text;
+		return this.text;
 	}
 	
 }
