@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -39,11 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.authorizeRequests()
 				.antMatchers("/logout","/register","/about").permitAll()
-				.anyRequest().authenticated();
-		/*
-				.antMatchers("/").authenticated()
-				.anyRequest().permitAll();
-		*/
+				.anyRequest().authenticated()
+			.and()
+				.csrf().disable();
+        //http.addFilterBefore(customizeFilterSecurityInterceptor, FilterSecurityInterceptor.class)
+        //.csrf().disable();
 	}
 	
 	public String getUserQuery(){

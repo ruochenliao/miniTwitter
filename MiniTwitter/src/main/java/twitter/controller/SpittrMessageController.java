@@ -34,12 +34,10 @@ public class SpittrMessageController {
 	this.feedService = feedService;
   }
   */
-  @MessageMapping("/spittle")
+  @MessageMapping("/twitter")
   @SendToUser("/queue/notifications")
   public Notification handleSpittle(Principal principal, SpittleForm form) {
 	  System.out.println("incoming message!");
-
-	  //Spittle spittle = new Spittle( principal.getName(), form.getText(), new Date());
 	  Spittle spittle = new Spittle( 1, form.getText(), new Date());
 	  feedService.saveSpittle(spittle);
 	  

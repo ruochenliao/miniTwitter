@@ -5,15 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 
 
 @Entity
 public class Spitter {
 	
-	private Spitter() {}
+	public Spitter() {}
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="id")
+	@GeneratedValue
 	private Long id;
 
 	@Column(name="username")
@@ -22,6 +26,9 @@ public class Spitter {
 	@Column(name="password")
 	private String password;
 
+	@Column(name="enabled")
+	private boolean enabled;
+	
 	@Column(name="fullname")
 	private String fullName;
 
@@ -37,9 +44,43 @@ public class Spitter {
 		this.password = password;
 		this.fullName = fullName;
 		this.email = email;
-		this.updateByEmail = updateByEmail;
+		this.updateByEmail = true;
+		this.enabled = true;
+	}
+	public Spitter(String username, String password, String fullName,
+			String email) {
+		this.username = username;
+		this.password = password;
+		this.fullName = fullName;
+		this.email = email;
+		this.updateByEmail = true;
+		this.enabled = true;
 	}
 
+	public void setFullName(String fullName){
+		this.fullName = fullName;
+	}
+	
+	public void setUsername(String username){
+		this.username = username;
+	}
+	
+	public void setPassword(String password){
+		this.password = password;
+	}
+	
+	public void setEmail(String email){
+		this.email = email;
+	}
+	
+	public void setUpdateByEmail(Boolean isUpdated){
+		this.updateByEmail = isUpdated;
+	}
+	
+	public void setEnabled(Boolean enabled){
+		this.enabled = enabled;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -63,5 +104,7 @@ public class Spitter {
 	public boolean isUpdateByEmail() {
 		return updateByEmail;
 	}
-
+	public boolean isEnabled(){
+		return enabled;
+	}
 }

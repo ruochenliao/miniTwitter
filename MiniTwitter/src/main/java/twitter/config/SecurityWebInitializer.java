@@ -1,5 +1,15 @@
 package twitter.config;
 
-import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import javax.servlet.ServletContext;
 
-public class SecurityWebInitializer extends AbstractSecurityWebApplicationInitializer {}
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
+import org.springframework.web.multipart.support.MultipartFilter;
+
+public class SecurityWebInitializer extends AbstractSecurityWebApplicationInitializer {
+    /*
+	@Override
+    protected void beforeSpringSecurityFilterChain(ServletContext servletContext) {
+        insertFilters(servletContext, new MultipartFilter());
+    }
+    */
+}
