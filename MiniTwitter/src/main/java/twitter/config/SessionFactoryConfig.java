@@ -16,6 +16,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -38,7 +39,14 @@ public class SessionFactoryConfig implements TransactionManagementConfigurer{
 	        return driverManagerDataSource;
 	    }
 	  */
-	 
+	  /*
+	  @Bean
+	  public HibernateTemplate hibernateTemplate(){
+		  HibernateTemplate hiber = new HibernateTemplate();
+		  hiber.setSessionFactory(sessionFactory);
+		  return hiber;
+	  }
+	  */
 	  @Bean
 	  public DataSource dataSource() {
 		BasicDataSource ds = new BasicDataSource();

@@ -48,8 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	public String getUserQuery(){
-		//return "SELECT username, password, enabled from users WHERE username = ?";
-		return "SELECT username, password, enabled from users WHERE username = ?";
+		return "SELECT username, password, enabled from spitter WHERE username = ?";
 	}
 	
 	@Autowired

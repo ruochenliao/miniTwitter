@@ -12,4 +12,5 @@ public interface SpittleFeedService {
 	
 	Spittle getSpittleById(long spittle_id);
 	
+	
 }

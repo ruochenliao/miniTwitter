@@ -28,12 +28,18 @@ public class Spittle {
 	@Column
 	private Date postedTime;
 
+	
 	public Spittle(long spitter, String message, Date postedTime) {
-		
 		this.spitter = spitter;
 		this.message = message;
 		this.postedTime = postedTime;
 	}
+	
+	public Spittle( String message, Date postedTime ){
+		this.message = message;
+		this.postedTime = postedTime;
+	}
+	
 	public Spittle(){
 		
 	}

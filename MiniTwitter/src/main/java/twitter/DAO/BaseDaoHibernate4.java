@@ -5,6 +5,8 @@ import javax.inject.Inject;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +26,18 @@ public class BaseDaoHibernate4<T> implements BaseDAO<T>{
 		
 	}
 	*/
-	
+/*	
+	private HibernateTemplate hibernateTemplate;
+
+	@Autowired
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+	*/
 	@Inject
 	public void setSessionFactory(SessionFactory sessionFactory)
 	{

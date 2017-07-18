@@ -13,37 +13,93 @@
   	Try mentioning each user (@fred and @chuck) to see the user-targeted "You just got mentioned" message appear in the appropriate user's browser.
   	</p>
 
+
 	<form method = "post" th:action='@{/logout}'>
-		<input type = "hidden" th:name ="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		<!--  <input type = "hidden" th:name ="${_csrf.parameterName}" th:value="${_csrf.token}"/>  -->
 		<input type = "submit" value = "logout"/>
 		<input type = "button" id = "stop" value = "Turn off button"/>
 	</form>
+  	<p>Broadcast to the world</p>
+  	<form id="broadcastForm">
+  		<textarea rows="4" cols="60" name="text"></textarea>
+  		<input type="submit"/>
+  	</form>	
+	
+	<p>send to to friend</p>
   	<form id="spittleForm">
   		<textarea rows="4" cols="60" name="text"></textarea>
   		<input type="submit"/>
   	</form>
+  	
+    <div id = "comment"></div>
+    
+  	
+  	<form id="commentOnForm">
+  		<p>Comment on</p>
+  		<textarea rows="4" cols="60" name="text"></textarea>
+  		<input type = "hidden" name = "commentToId"></input>
+  		<input type="submit" value = "send"/>
+  	</form>	    
+  	
+    <div id="output"></div>  
+  
   
     <script th:inline="javascript">
+    	$("#commentOnForm").hide();
     	$('#spittleForm').submit(function(e){
     		e.preventDefault();
     		var text = $('#spittleForm').find('textarea[name="text"]').val();
     		sendSpittle(text);
     	});
-    
+    	$('#broadcastForm').submit(function(e){
+    		e.preventDefault();
+    		var text = $('#broadcastForm').find('textarea[name="text"]').val();
+    		broadcastComment(text);
+    	});
+    	$('#commentOnForm').submit(function(e){
+    		e.preventDefault();
+    		var text = $('#commentOnForm').find('textarea[name="text"]').val();
+    		commentOn(text +" @"+ $('input[name="commentToId"]').val() );
+    		$('#commentOnForm').hide();
+    	});
+    	
       var sock = new SockJS([[@{/spittr}]]);
       var stomp = Stomp.over(sock);
 
       stomp.connect('guest', 'guest', function(frame) {
         console.log('*****  Connected  *****');
         stomp.subscribe("/topic/spittlefeed", handleSpittle);
+        stomp.subscribe("/comment/broadcastComment", handleBroadcastComment);
+        stomp.subscribe("/user/comment/commentOn",handleCommentOn);
         stomp.subscribe("/user/queue/notifications", handleNotification);
       });
-      
+
+      function handleBroadcastComment(message){
+    	  console.log(message);
+    	  console.log("brocasting Comment");
+    	  var body = JSON.parse(message.body);
+    	  var html = '<a><b class = "comment"  commentID = '+ String(body.id) +' userName = '+ String(body.userName) +' >'  + body.userName +' broadcast: ' + body.message + '</b></a><br/>'
+ 		  alert(body.id +" "+body.userName+ " "+html);
+    	  $("#comment").append('<a><b>'  + body.userName +' broadcast: ' + body.message + '</b></a><br/>');
+		  $("#comment a:last").attr("href","#commentOnForm");
+		  $("#comment a:last").attr("id", body.id);
+		  $("#comment a:last").attr("class", "comment");
+	      $("#comment").on('click','a',function(){
+	      	alert("show commentOnForm");
+	      	//$('#commentOnForm input[name ="commentToId"]').val(body.userName);
+	    	$("#commentOnForm").show();
+	      });		  
+      }
+
+      function handleCommentOn(message){
+    	  $("#comment").appned("<b>comment on: " + JSON.parse(message.body).message + "</b><br/>");
+      }
+
       function handleSpittle(message) {
     	  console.log('Spittle:', message);
     	  $('#output').append("<b>Received spittle: " + JSON.parse(message.body).message + "</b><br/>");
       }
-      
+
       function handleNotification(message) {
         console.log('Notification: ', message);
         $('#output').append("<b>Received: " + 
@@ -56,12 +112,22 @@
             JSON.stringify({ 'text': text }));
       }
 
+      function broadcastComment(text){
+    	  console.log('broadcast comment');
+    	  stomp.send("/app/commentBroadcast",{},
+    			  JSON.stringify({'text':text}));
+      }
+      function commentOn(text){
+    	  console.log('broadcast comment');
+    	  stomp.send("/app/commentOn",{},
+    			  JSON.stringify({'text':text}));
+      }
+      
       $('#stop').click(function() {
     	  alert("turned off");
     	  sock.close()
     	  });
       </script>
-    
-    <div id="output"></div>
+
   </body>
 </html>

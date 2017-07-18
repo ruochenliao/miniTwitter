@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import twitter.DAO.CommentDao;
 import twitter.DAO.SpittleDao;
 import twitter.domain.Notification;
 import twitter.domain.Spittle;
@@ -22,7 +23,7 @@ public class SpittleFeedServiceImpl implements SpittleFeedService {
 	private Pattern pattern = Pattern.compile("\\@(\\S+)");
 	
 	@Autowired
-	public SpittleFeedServiceImpl(SimpMessagingTemplate messaging, SpittleDao spittleDao) {
+	public SpittleFeedServiceImpl(SimpMessagingTemplate messaging, SpittleDao spittleDao, CommentDao commentDao) {
 		this.messaging = messaging;
 		this.spittleDao = spittleDao;
 	}
@@ -47,14 +48,10 @@ public class SpittleFeedServiceImpl implements SpittleFeedService {
 			e.printStackTrace();
 		}
 	}
-	/*
-	@Override
-	public List<Spittle> getSpittleByUser(long user_id) {
-		return (List<Spittle>) spittleDao.get(Spittle.class, user_id );
-	}
-	*/
 	@Override
 	public Spittle getSpittleById(long spittle_id) {
 		return spittleDao.get(Spittle.class, spittle_id );
-	}	
+	}
+	
+	
 }
