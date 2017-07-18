@@ -50,7 +50,8 @@ public class SpittrMessageController {
   @MessageMapping("/commentBroadcast")
   @SendToUser("/queue/notifications")
   public Notification broadcastComment(Principal principal, BroadcastCommentForm form) {
-	  System.out.println("incoming broadcasting message!");
+	  System.out.println("incoming broadcasting message: "+ form.getText());
+
 	  Comment comment = new Comment(principal.getName(), form.getText(), 0 );
 	  feedComment.save( comment );
 	  feedComment.broadcastComment(comment);
@@ -61,9 +62,10 @@ public class SpittrMessageController {
   @SendToUser("/queue/notifications")
   public Notification commentOn( Principal principal, CommentOnForm form ){
 	  System.out.println("incomming comment!");
+	  //System.out.println( principal.getName() +" :" + form.getText() +" "+form.getCommentToId() +" "+form.getCommentToUser() );
 	  Comment comment = new Comment( principal.getName(), form.getText(), form.getCommentToId() );
 	  feedComment.save(comment);
-	  feedComment.commentOn( comment, form.getCommentToId() );
+	  feedComment.commentOn( comment, form.getCommentToId(), form.getCommentToUser() );
 	  return new Notification( "successfully comment from: "+ principal.getName() );
   }
 }

@@ -38,6 +38,7 @@
   		<p>Comment on</p>
   		<textarea rows="4" cols="60" name="text"></textarea>
   		<input type = "hidden" name = "commentToId"></input>
+  		<input type = "hidden" name = "commentToUser"></input>
   		<input type="submit" value = "send"/>
   	</form>	    
   	
@@ -50,17 +51,21 @@
     		e.preventDefault();
     		var text = $('#spittleForm').find('textarea[name="text"]').val();
     		sendSpittle(text);
+    		$(this).find('textarea[name="text"]').val("");
     	});
     	$('#broadcastForm').submit(function(e){
     		e.preventDefault();
     		var text = $('#broadcastForm').find('textarea[name="text"]').val();
     		broadcastComment(text);
+    		$(this).find('textarea[name="text"]').val("");
     	});
     	$('#commentOnForm').submit(function(e){
     		e.preventDefault();
     		var text = $('#commentOnForm').find('textarea[name="text"]').val();
-    		commentOn(text +" @"+ $('input[name="commentToId"]').val() );
+    		//commentOn(text +" @"+ $('input[name="commentToId"]').val() );
+    		commentOn(text, $('input[name="commentToId"]').val(), $('input[name="commentToUser"]').val() );
     		$('#commentOnForm').hide();
+    		$(this).find('textarea[name="text"]').val("");
     	});
     	
       var sock = new SockJS([[@{/spittr}]]);
@@ -78,21 +83,37 @@
     	  console.log(message);
     	  console.log("brocasting Comment");
     	  var body = JSON.parse(message.body);
-    	  var html = '<a><b class = "comment"  commentID = '+ String(body.id) +' userName = '+ String(body.userName) +' >'  + body.userName +' broadcast: ' + body.message + '</b></a><br/>'
- 		  alert(body.id +" "+body.userName+ " "+html);
+    	  //var html = '<a><b class = "comment"  commentID = '+ String(body.id) +' userName = '+ String(body.userName) +' >'  + body.userName +' broadcast: ' + body.message + '</b></a><br/>'
+ 		  //alert(body.id +" "+body.userName+ " "+html);
     	  $("#comment").append('<a><b>'  + body.userName +' broadcast: ' + body.message + '</b></a><br/>');
 		  $("#comment a:last").attr("href","#commentOnForm");
 		  $("#comment a:last").attr("id", body.id);
 		  $("#comment a:last").attr("class", "comment");
-	      $("#comment").on('click','a',function(){
+	      //$("#comment").on('click','a',function(){
+	      $("#comment").click(function(){
 	      	alert("show commentOnForm");
-	      	//$('#commentOnForm input[name ="commentToId"]').val(body.userName);
+	      	$('#commentOnForm input[name ="commentToId"]').val(body.id);
+	      	$('#commentOnForm input[name ="commentToUser"]').val(body.userName);
 	    	$("#commentOnForm").show();
 	      });		  
       }
 
       function handleCommentOn(message){
-    	  $("#comment").appned("<b>comment on: " + JSON.parse(message.body).message + "</b><br/>");
+    	  alert("comment on me!");
+    	  console.log( message.body );
+    	  alert(JSON.parse(message.body));
+    	  var body = JSON.parse(message.body);
+    	  $("#comment").append('--<a><b>'+ body.userName+ ' comment: '+ body.message +'</b></a><br/>'  );
+		  $("#comment a:last").attr("href","#commentOnForm");
+		  $("#comment a:last").attr("id", body.id);
+		  $("#comment a:last").attr("class", "comment");  
+	      //$("#comment").on('click','a',function(){
+	   	  $("#comment").click(function(){
+		      	alert("show commentOnForm");
+		      	$('#commentOnForm input[name ="commentToId"]').val(body.id);
+		      	$('#commentOnForm input[name ="commentToUser"]').val(body.userName);
+		    	$("#commentOnForm").show();
+		      });			  
       }
 
       function handleSpittle(message) {
@@ -117,10 +138,11 @@
     	  stomp.send("/app/commentBroadcast",{},
     			  JSON.stringify({'text':text}));
       }
-      function commentOn(text){
-    	  console.log('broadcast comment');
+      function commentOn(text, commentToId, commentToUser){
+    	  console.log('commentOn is sent');
+    	  console.log(text+" "+commentToId+ " " +commentToUser);
     	  stomp.send("/app/commentOn",{},
-    			  JSON.stringify({'text':text}));
+    			  JSON.stringify({'text':text, 'commentToId': commentToId, "commentToUser":commentToUser}));
       }
       
       $('#stop').click(function() {
